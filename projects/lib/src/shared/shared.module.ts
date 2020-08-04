@@ -21,9 +21,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NoResultsComponent } from './components/no-results/no-results.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { AccessTokenDirective } from './directives/cms-access-token.directive';
 
 @NgModule({
-  declarations: [NoResultsComponent, SafeHtmlPipe],
+  declarations: [NoResultsComponent, SafeHtmlPipe, AccessTokenDirective],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -46,7 +47,8 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     NgbNavModule,
     NgxSpinnerModule,
     NoResultsComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    AccessTokenDirective,
   ],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },

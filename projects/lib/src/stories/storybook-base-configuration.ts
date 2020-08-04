@@ -1,11 +1,7 @@
 import 'tinymce/tinymce';
 import '../../../../plugin/dist/plugin.min.js';
-import { HeadStartSDK } from '@ordercloud/headstart-sdk';
 import * as HeadStartSDKInstance from '@ordercloud/headstart-sdk';
 
 HeadStartSDKInstance.Configuration.Set({
   baseApiUrl: 'https://marketplace-middleware-test.azurewebsites.net',
 });
-HeadStartSDK.Tokens.SetAccessToken(
-  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3IiOiJjcmhpc3RpYW5zdXBwbGllcjQxMTA2IiwiY2lkIjoiN2UwZmQ2MmItOWRkOS00OTM5LTllMGItMjZkODgyZmMzNTA4IiwiaW1wIjoiMTAwNSIsInUiOiIxODEyNjMwIiwidXNydHlwZSI6InN1cHBsaWVyIiwicm9sZSI6WyJCdXllclJlYWRlciIsIk1lQWRtaW4iLCJPcmRlckFkbWluIiwiUGFzc3dvcmRSZXNldCIsIlByaWNlU2NoZWR1bGVBZG1pbiIsIlByaWNlU2NoZWR1bGVSZWFkZXIiLCJQcm9kdWN0QWRtaW4iLCJQcm9kdWN0UmVhZGVyIiwiUHJvbW90aW9uQWRtaW4iLCJQcm9tb3Rpb25SZWFkZXIiLCJTaGlwbWVudEFkbWluIiwiU3VwcGxpZXJBZGRyZXNzUmVhZGVyIiwiU3VwcGxpZXJSZWFkZXIiLCJTdXBwbGllclVzZXJSZWFkZXIiXSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm9yZGVyY2xvdWQuaW8iLCJhdWQiOiJodHRwczovL2FwaS5vcmRlcmNsb3VkLmlvIiwiZXhwIjoxNTk2NTIwNzQ1LCJuYmYiOjE1OTY0OTE5NDV9.6mYuxAiNokDsl47Ogk1n7hATSXK9ZizoyJqOu4GgBa8'
-);

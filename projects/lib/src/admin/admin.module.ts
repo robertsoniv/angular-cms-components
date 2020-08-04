@@ -32,7 +32,7 @@ const declarations = [
   DragAndDropDirective,
   PageListComponent,
   StatusIconComponent,
-  SectionTemplateRendererComponent
+  SectionTemplateRendererComponent,
 ];
 @NgModule({
   declarations,
@@ -41,12 +41,9 @@ const declarations = [
     AssetPickerComponent,
     CarouselEditorComponent,
     SectionPickerComponent,
-    SectionDateSettingsComponent
+    SectionDateSettingsComponent,
   ],
-  imports: [
-    CmsSharedModule,
-    CmsBuyerModule,
-  ],
-  exports: declarations
+  imports: [CmsSharedModule, CmsBuyerModule],
+  exports: [...declarations, CmsSharedModule],
 })
 export class CmsAdminModule {}
