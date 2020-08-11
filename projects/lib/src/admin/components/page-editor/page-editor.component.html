@@ -40,14 +40,29 @@
           ></span>
           Saving...
         </button>
-        <button
-          *ngIf="!isLoadingSave"
-          class="btn btn-primary"
-          [disabled]="!hasChanges || !isValid"
-          (click)="onSubmit()"
+        <div
+          [ngbTooltip]="
+            validation && validation.message
+              ? validation.message
+              : defaultErrorMessage
+          "
+          placement="left"
+          [disableTooltip]="validation ? !validation.error : defaultIsValid"
         >
-          {{ document.ID ? "Save Changes" : "Create New Page" }}
-        </button>
+          <button
+            *ngIf="!isLoadingSave"
+            class="btn btn-primary"
+            [disabled]="
+              !hasChanges ||
+              (hasChanges &&
+                ((validation && validation.error) ||
+                  (!validation && !defaultIsValid)))
+            "
+            (click)="onSubmit()"
+          >
+            {{ document.ID ? "Save Changes" : "Create New Page" }}
+          </button>
+        </div>
         <button
           *ngIf="document.ID && document.Doc && !document.Doc.Active"
           class="btn btn-outline-danger ml-3"
@@ -73,7 +88,7 @@
                   #pageTitle
                   required
                   maxlength="100"
-                  (keyup)="onPageTitleKeyUp(pageTitle.value)"
+                  (ngModelChange)="onPageTitleKeyUp(pageTitle.value)"
                   placeholder="Choose a descriptive title for this page"
                 />
                 <small id="pageTitleHelp" class="form-text text-muted">
@@ -146,7 +161,7 @@
                 type="text"
                 class="form-control"
                 [(ngModel)]="page.Url"
-                (ngModelChange)="onPageUrlChange($event)"
+                (ngModelChange)="onPageChange($event)"
                 [readOnly]="automaticUrl"
                 required
                 aria-describedby="pageUrlHelp"
@@ -174,7 +189,7 @@
                       class="custom-control-input"
                       id="pageNavigation"
                       type="checkbox"
-                      (change)="onPageNavigationChange()"
+                      (ngModelChange)="onPageNavigationChange()"
                       [(ngModel)]="pageNavigation"
                     />
                     <label class="custom-control-label" for="pageNavigation"
@@ -213,6 +228,7 @@
               type="text"
               readonly="true"
               [(ngModel)]="page.Title"
+              (ngModelChange)="onPageChange()"
               class="form-control"
               aria-describedby="metaTitleHelp"
             />
@@ -235,6 +251,7 @@
               type="text"
               class="form-control"
               [(ngModel)]="page.Description"
+              (ngModelChange)="onPageChange()"
               maxlength="300"
               rows="4"
               required
@@ -272,6 +289,7 @@
               rows="4"
               class="form-control"
               [(ngModel)]="page.HeaderEmbeds"
+              (ngModelChange)="onPageChange()"
               placeholder="Copy and paste any scripts you want to execute in the <head> element"
             ></textarea>
           </div>
@@ -283,6 +301,7 @@
               rows="4"
               class="form-control"
               [(ngModel)]="page.FooterEmbeds"
+              (ngModelChange)="onPageChange()"
               placeholder="Copy and paste any scripts you want to execute at the bottom of the <body> element"
             ></textarea>
           </div>

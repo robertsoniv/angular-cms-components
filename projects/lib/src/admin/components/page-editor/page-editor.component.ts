@@ -26,6 +26,11 @@ export const EMPTY_PAGE_CONTENT_DOC: Partial<PageContentDoc> = {
   NavigationTitle: '',
 };
 
+export interface CmsPageValidation {
+  error: boolean;
+  message?: string;
+}
+
 @Component({
   selector: 'cms-page-editor',
   templateUrl: './page-editor.component.html',
@@ -34,6 +39,7 @@ export const EMPTY_PAGE_CONTENT_DOC: Partial<PageContentDoc> = {
 export class PageEditorComponent implements OnInit, OnChanges {
   @Input() renderSiteUrl: string;
   @Input() editorOptions: any;
+  @Input() validation?: CmsPageValidation;
   @Input() resourceType?:
     | 'Products'
     | 'Categories'
@@ -45,6 +51,7 @@ export class PageEditorComponent implements OnInit, OnChanges {
   @Input() resourceID?: string = null; // optional
   @Input() parentResourceID?: string = null;
   @Input() document?: JDocument;
+  @Output() pageChanged = new EventEmitter<any>();
   @Output() backClicked = new EventEmitter<MouseEvent>();
   @Output() pageSaved = new EventEmitter<JDocument>();
   @Output() pageDeleted = new EventEmitter<string>();
@@ -76,20 +83,27 @@ export class PageEditorComponent implements OnInit, OnChanges {
     }
   }
 
+  onPageChange(): void {
+    this.pageChanged.emit(this.page);
+  }
+
   onPageContentChange(html: string): void {
     this.page = { ...this.page, Content: html };
+    this.onPageChange();
   }
 
   onPageTitleKeyUp(value: string): void {
     if (this.automaticUrl) {
       this.page.Url = kebab(value);
     }
+    this.onPageChange();
   }
 
   onAutomaticUrlChange(): void {
     if (this.automaticUrl && this.page.Title) {
       this.page.Url = kebab(this.page.Title);
     }
+    this.onPageChange();
   }
 
   onPageNavigationChange(): void {
@@ -98,10 +112,12 @@ export class PageEditorComponent implements OnInit, OnChanges {
     } else {
       this.page.NavigationTitle = '';
     }
+    this.onPageChange();
   }
 
   onPageStatusChange(): void {
     this.page.Active = !this.page.Active;
+    this.onPageChange();
   }
 
   async onSubmit(): Promise<void> {
@@ -178,10 +194,13 @@ export class PageEditorComponent implements OnInit, OnChanges {
     return JSON.stringify(this.document.Doc) !== JSON.stringify(this.page);
   }
 
-  get isValid(): boolean {
-    return Boolean(
-      this.page.Title &&
-        (this.page.Url || (!this.page.Url && this.page.Title === 'Home'))
-    );
+  get defaultIsValid(): boolean {
+    return Boolean(this.page.Title && this.page.Url);
+  }
+
+  get defaultErrorMessage(): string | undefined {
+    if (!this.defaultIsValid) {
+      return 'Missing required fields.';
+    }
   }
 }

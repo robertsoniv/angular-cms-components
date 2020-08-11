@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { HeadStartSDK, JDocument, ListPage } from '@ordercloud/headstart-sdk';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/internal/operators';
 import { PAGE_SCHEMA } from '../../constants/page-schema.constants';
 import { RequiredDeep } from '@ordercloud/headstart-sdk/dist/models/RequiredDeep';
+import { CmsPageValidation } from '../page-editor/page-editor.component';
+import { PageContentDoc } from '../../models/page-content-doc.interface';
 
 @Component({
   selector: 'cms-page-list',
@@ -24,6 +26,8 @@ export class PageListComponent implements OnInit {
   @Input() parentResourceID?: string = null;
   @Input() editorOptions: any;
   @Input() renderSiteUrl: string;
+  @Input() validation?: CmsPageValidation;
+  @Output() pageChanged = new EventEmitter<PageContentDoc>();
   searchTerm = '';
   searchTermChanged = new Subject<string>();
   loading = true;
@@ -87,6 +91,10 @@ export class PageListComponent implements OnInit {
       this.parentResourceID,
       this.resourceType
     )) as any;
+  }
+
+  onPageChanged(page: any): void {
+    this.pageChanged.emit(page);
   }
 
   onSearchFieldChange(searchTerm): void {

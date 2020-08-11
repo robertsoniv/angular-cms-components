@@ -130,6 +130,8 @@
   </div>
   <div class="flex-grow-1 flex-shrink-1">
     <cms-page-editor
+      [validation]="validation"
+      (pageChanged)="onPageChanged($event)"
       (backClicked)="goToList($event)"
       (pageSaved)="onPageSaved($event)"
       (pageDeleted)="onPageDeleted($event)"
